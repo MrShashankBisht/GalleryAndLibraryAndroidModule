@@ -1,5 +1,6 @@
 package com.iab.galleryandlibrary.librarry.presenter
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.view.View
@@ -30,18 +31,21 @@ class LibraryPresenterImpl(builder: Builder): LibraryPresenterInterface, Recycle
 //    Strong reference
     var libraryViewInterface: LibraryViewInterface = LibraryViewImpl(contextWeakReference.get()!!, this)
     var recyclerAdapter:RecyclerAdapter = RecyclerAdapter(this)
+    var layoutManager:GridLayoutManager? = null
 //    variables
     var recyclerItemBackgroundColor: Int = Color.TRANSPARENT
+    var recyclerItemImageViewScaleType: ImageView.ScaleType = ImageView.ScaleType.CENTER_CROP
     var spanCount:Int = 3
     var recyclerItemMargin:Int = 0
     var recyclerItemPadding:Int = 0
     var imageTextDataModels: ArrayList<ImageTextDataModel> = ArrayList()
+    var folderName:String? = null
 //    Listeners
     var imageTextListener = object : ImageTextPresenterInterface.ImageTextListener {
-        override fun onImageTextViewClicked(id: Int, isSelected: Boolean) {
-//            open image in ViewImage Activity
-        }
+    override fun onImageTextViewClicked(imageTextDataModel: ImageTextDataModel) {
+        libraryListenerWeakReference.get()?.onImageViewClicked(imageTextDataModel)
     }
+}
 
     companion object LibraryPresenterCompanionObject {
         fun newBuilder(context: Context, libraryListener: LibraryPresenterInterface.LibraryListener): Builder {
@@ -59,9 +63,14 @@ class LibraryPresenterImpl(builder: Builder): LibraryPresenterInterface, Recycle
         var recyclerOrientation: Int = LinearLayoutManager.VERTICAL
         var viewBackgroundColor = Color.TRANSPARENT
         var recyclerItemBackgroundColor = Color.TRANSPARENT
+        var recyclerItemImageViewScaleType:ImageView.ScaleType = ImageView.ScaleType.CENTER_CROP
 
         fun withPaddingInView(padding: Int): Builder{
             this.paddingInView = padding
+            return this
+        }
+        fun withRecyclerItemImageViewScaleType(scaleType: ImageView.ScaleType): Builder{
+            this.recyclerItemImageViewScaleType = scaleType
             return this
         }
         fun withPaddingInRecyclerItem(padding: Int):Builder{
@@ -100,17 +109,22 @@ class LibraryPresenterImpl(builder: Builder): LibraryPresenterInterface, Recycle
     init {
         this.recyclerItemBackgroundColor = builder.recyclerItemBackgroundColor
         this.spanCount = builder.spanCount
+        this.recyclerItemImageViewScaleType = builder.recyclerItemImageViewScaleType
         this.recyclerItemMargin = builder.marginInRecyclerViewItem
         this.recyclerItemPadding = builder.paddingInRecyclerItem
         libraryViewInterface.setViewMargin(builder.marginInView)
         libraryViewInterface.setViewPadding(builder.paddingInView)
         libraryViewInterface.setViewBackgroundColor(builder.viewBackgroundColor)
 //        Now creating adapter object and layout manager and set to view
-        libraryViewInterface.setRecyclerLayoutManager(GridLayoutManager(contextWeakReference.get(),builder.spanCount, builder.recyclerOrientation,false))
+        layoutManager = GridLayoutManager(contextWeakReference.get(),builder.spanCount, builder.recyclerOrientation,false)
+        layoutManager?.let {
+            libraryViewInterface.setRecyclerGridLayoutManager(it)
+        }
         libraryViewInterface.setRecyclerAdapter(recyclerAdapter)
     }
 
     override fun createView(folderName:String) {
+        this.folderName = folderName
         val mediaImageTextDataModel = loadMediaImagesListByBucketName(contextWeakReference.get()!!, folderName, null)
         imageTextDataModels.clear()
         imageTextDataModels = creatingImageTextDataModel(mediaImageTextDataModel)
@@ -121,6 +135,40 @@ class LibraryPresenterImpl(builder: Builder): LibraryPresenterInterface, Recycle
         return libraryViewInterface as View
     }
 
+    override fun removeItemFromRecyclerView(id: Int) {
+        imageTextDataModels.removeAt(id)
+        contextWeakReference.get()?.let {
+            (it as Activity).runOnUiThread(Runnable {
+                recyclerAdapter.notifyDataSetChanged()
+            })
+        }
+//        recyclerAdapter.notifyDataSetChanged()
+//        recyclerAdapter.notifyItemRemoved(id)
+//        libraryViewInterface.invalidateRecyclerView()
+    }
+
+    override fun reloadView() {
+        folderName?.let { it ->
+//            this.libraryViewInterface.setRecyclerAdapter(null)
+//            this.libraryViewInterface.setRecyclerGridLayoutManager(null)
+
+            val mediaImageTextDataModel = loadMediaImagesListByBucketName(contextWeakReference.get()!!, it, null)
+            this.imageTextDataModels.clear()
+            this.imageTextDataModels = creatingImageTextDataModel(mediaImageTextDataModel)
+//
+//            recyclerAdapter = RecyclerAdapter(this)
+//            this.libraryViewInterface.setRecyclerGridLayoutManager(layoutManager)
+//            this.libraryViewInterface.setRecyclerAdapter(recyclerAdapter)
+
+            contextWeakReference.get()?.let { it1 ->
+                (it1 as Activity).runOnUiThread(Runnable {
+                    recyclerAdapter.notifyDataSetChanged()
+                    this.libraryViewInterface.invalidateRecyclerView()
+                })
+            }
+        }
+    }
+
     //    Recycler Adapter View Interface methods implementation
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val imageTextPresenterInterface =
@@ -129,7 +177,7 @@ class LibraryPresenterImpl(builder: Builder): LibraryPresenterInterface, Recycle
                 .withViewHeightInDP(ImageUtils.pxToDp(contextWeakReference.get(),calculateRecyclerItemHeightWidth(this.spanCount).y).toInt())
                 .withViewPaddingInDP(this.recyclerItemPadding)
                 .withViewMarginInDP(this.recyclerItemMargin)
-                .withImageTextImageViewScaleType(ImageView.ScaleType.FIT_CENTER)
+                .withImageTextImageViewScaleType(recyclerItemImageViewScaleType)
                 .withImageTextTextViewVisibility(View.GONE)
                 .build()
         val view = imageTextPresenterInterface.getView()
@@ -137,8 +185,10 @@ class LibraryPresenterImpl(builder: Builder): LibraryPresenterInterface, Recycle
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as RecyclerAdapterViewHolder).imageTextPresenterInterface.createView(imageTextDataModel = imageTextDataModels.get(position))
+        (holder as RecyclerAdapterViewHolder).imageTextPresenterInterface.createView(imageTextDataModels[position])
     }
+
+
 
     override fun getItemCount(): Int {
         return imageTextDataModels.size

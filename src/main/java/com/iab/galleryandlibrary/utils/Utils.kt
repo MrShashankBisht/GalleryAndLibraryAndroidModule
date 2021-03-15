@@ -195,6 +195,7 @@ fun loadMediaImagesList(context: Context, bucketId: Int, formatArray: Array<Stri
     val idColumn = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
     val dateAddedColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)
     val displayNameColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME)
+    val bucketNameColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME)
     val mimeTypeColumn = cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE)
     val dataPathColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
     val count = cursor.count
@@ -210,6 +211,7 @@ fun loadMediaImagesList(context: Context, bucketId: Int, formatArray: Array<Stri
             )
             val displayName = cursor.getString(displayNameColumn)
             val mimeType = cursor.getString(mimeTypeColumn)
+            val bucketName = cursor.getString(bucketNameColumn)
             val dataPath = cursor.getString(dataPathColumn)
             //                String type = mimeType.replace("image/", "");
             // Add this to the Model
@@ -222,13 +224,13 @@ fun loadMediaImagesList(context: Context, bucketId: Int, formatArray: Array<Stri
                     for (formatType in formatArray) {
                         if (mimeType.endsWith(formatType!!)) {
                             val mediaStoreItemDataModel =
-                                MediaStoreItemDataModel(id, contentURI, displayName, dateAdded, 0)
+                                MediaStoreItemDataModel(id, contentURI, displayName,bucketName ,dateAdded, 0)
                             imageDataList.add(mediaStoreItemDataModel)
                         }
                     }
                 } else {
                     val mediaStoreItemDataModel =
-                        MediaStoreItemDataModel(id, contentURI, displayName, dateAdded, 0)
+                        MediaStoreItemDataModel(id, contentURI, displayName, bucketName, dateAdded, 0)
                     imageDataList.add(mediaStoreItemDataModel)
                 }
             }
@@ -244,6 +246,7 @@ fun creatingImageTextDataModel(mediaPickerItemDataModels: ArrayList<MediaStoreIt
         imageTextDataModel.id = i
         imageTextDataModel.imageUri = mediaPickerItemDataModel.contentURI
         imageTextDataModel.text = mediaPickerItemDataModel.displayName
+        imageTextDataModel.bucketName = mediaPickerItemDataModel.bucketName
         imageTextDataModel.imageType = ImageType.URI
         imageTextDataModel.isCheckBoxVisible = false
         imageTextDataModel.isChecked = false
@@ -282,6 +285,7 @@ fun loadMediaImagesListByBucketName(context: Context, bucketName: String, format
     val idColumn = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
     val dateAddedColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)
     val displayNameColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME)
+    val bucketNameColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME)
     val mimeTypeColumn = cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE)
     val dataPathColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
     val count = cursor.count
@@ -297,6 +301,7 @@ fun loadMediaImagesListByBucketName(context: Context, bucketName: String, format
             )
             val displayName = cursor.getString(displayNameColumn)
             val mimeType = cursor.getString(mimeTypeColumn)
+            val bucketName = cursor.getString(bucketNameColumn)
             val dataPath = cursor.getString(dataPathColumn)
             //                String type = mimeType.replace("image/", "");
             // Add this to the Model
@@ -309,13 +314,13 @@ fun loadMediaImagesListByBucketName(context: Context, bucketName: String, format
                     for (formatType in formatArray) {
                         if (mimeType.endsWith(formatType!!)) {
                             val mediaStoreItemDataModel =
-                                MediaStoreItemDataModel(id, contentURI, displayName, dateAdded, 0)
+                                MediaStoreItemDataModel(id, contentURI, displayName, bucketName, dateAdded, 0)
                             imageDataList.add(mediaStoreItemDataModel)
                         }
                     }
                 } else {
                     val mediaStoreItemDataModel =
-                        MediaStoreItemDataModel(id, contentURI, displayName, dateAdded, 0)
+                        MediaStoreItemDataModel(id, contentURI, displayName, bucketName, dateAdded, 0)
                     imageDataList.add(mediaStoreItemDataModel)
                 }
             }

@@ -51,19 +51,23 @@ class LibraryViewImpl(context: Context, libraryPresenterInterface: LibraryPresen
         }
     }
 
-    override fun setRecyclerAdapter(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) {
+    override fun invalidateRecyclerView() {
+        library_recycler_view.invalidate()
+    }
+
+    override fun setRecyclerAdapter(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>?) {
         library_recycler_view.adapter = adapter
     }
 
-    override fun setRecyclerLayoutManager(layoutManager: LinearLayoutManager) {
+    override fun setRecyclerLinearLayoutManager(layoutManager: LinearLayoutManager?) {
         library_recycler_view.layoutManager = layoutManager
     }
 
-    override fun setRecyclerLayoutManager(layoutManager: GridLayoutManager) {
+    override fun setRecyclerGridLayoutManager(layoutManager: GridLayoutManager?) {
         library_recycler_view.layoutManager = layoutManager
     }
 
-    override fun setRecyclerLayoutManager(layoutManager: StaggeredGridLayoutManager) {
+    override fun setRecyclerStaggeredLayoutManager(layoutManager: StaggeredGridLayoutManager?) {
         library_recycler_view.layoutManager = layoutManager
     }
 }

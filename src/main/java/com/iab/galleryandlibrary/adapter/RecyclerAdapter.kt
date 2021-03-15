@@ -20,4 +20,6 @@ class RecyclerAdapter(private val adapterInterface: RecyclerAdapterInterface): R
     override fun getItemCount(): Int {
         return adapterInterface.getItemCount()
     }
+
+
 }

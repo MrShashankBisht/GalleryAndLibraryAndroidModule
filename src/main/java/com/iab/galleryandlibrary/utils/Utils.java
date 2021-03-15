@@ -192,6 +192,7 @@ public class Utils {
         int idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID);
         int dateAddedColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED);
         int displayNameColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME);
+        int bucketNameColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
         int mimeTypeColumn = cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE);
         int dataPathColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 
@@ -203,6 +204,7 @@ public class Utils {
                 long id = cursor.getLong(idColumn);
                 Date dateAdded = new Date(TimeUnit.SECONDS.toMillis(cursor.getLong(dateAddedColumn)));
                 String displayName = cursor.getString(displayNameColumn);
+                String bucketName = cursor.getString(bucketNameColumn);
                 String mimeType = cursor.getString(mimeTypeColumn);
                 String dataPath = cursor.getString(dataPathColumn);
 //                String type = mimeType.replace("image/", "");
@@ -216,12 +218,12 @@ public class Utils {
                     if (formatArray != null && formatArray.length > 0) {
                         for (String formatType : formatArray) {
                             if (mimeType.endsWith(formatType)) {
-                                MediaStoreItemDataModel mediaStoreItemDataModel = new MediaStoreItemDataModel(id, contentURI, displayName, dateAdded, 0);
+                                MediaStoreItemDataModel mediaStoreItemDataModel = new MediaStoreItemDataModel(id, contentURI, displayName, bucketName, dateAdded, 0);
                                 imageDataList.add(mediaStoreItemDataModel);
                             }
                         }
                     } else {
-                        MediaStoreItemDataModel mediaStoreItemDataModel = new MediaStoreItemDataModel(id, contentURI, displayName, dateAdded, 0);
+                        MediaStoreItemDataModel mediaStoreItemDataModel = new MediaStoreItemDataModel(id, contentURI, displayName, bucketName, dateAdded, 0);
                         imageDataList.add(mediaStoreItemDataModel);
                     }
 
@@ -349,7 +351,7 @@ public class Utils {
 //        int displayNameColumn =
 //                cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME);
         int displayNameColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME);
-//        int displayFolderNameColumn = cursor.getColumnIndex(MediaStore.Video.Media.BUCKET_DISPLAY_NAME);
+        int displayFolderNameColumn = cursor.getColumnIndex(MediaStore.Video.Media.BUCKET_DISPLAY_NAME);
         int mimeTypeColumn = cursor.getColumnIndex(MediaStore.Video.Media.MIME_TYPE);
         int dataPathColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
         int durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION);
@@ -362,6 +364,7 @@ public class Utils {
                 long id = cursor.getLong(idColumn);
                 Date dateAdded = new Date(TimeUnit.SECONDS.toMillis(cursor.getLong(dateAddedColumn)));
                 String displayName = cursor.getString(displayNameColumn);
+                String bucketName = cursor.getString(displayFolderNameColumn);
                 String mimeType = cursor.getString(mimeTypeColumn);
                 String dataPath = cursor.getString(dataPathColumn);
 //                String type = mimeType.replace("video/", "");
@@ -374,12 +377,12 @@ public class Utils {
                     if (formatArray != null && formatArray.length > 0) {
                         for (String formatType : formatArray) {
                             if (mimeType.endsWith(formatType)) {
-                                MediaStoreItemDataModel mediaStoreItemDataModel = new MediaStoreItemDataModel(id, contentURI, displayName, dateAdded, duration);
+                                MediaStoreItemDataModel mediaStoreItemDataModel = new MediaStoreItemDataModel(id, contentURI, displayName, bucketName, dateAdded, duration);
                                 videoDataList.add(mediaStoreItemDataModel);
                             }
                         }
                     } else {
-                        MediaStoreItemDataModel mediaStoreItemDataModel = new MediaStoreItemDataModel(id, contentURI, displayName, dateAdded, duration);
+                        MediaStoreItemDataModel mediaStoreItemDataModel = new MediaStoreItemDataModel(id, contentURI, displayName, bucketName, dateAdded, duration);
                         videoDataList.add(mediaStoreItemDataModel);
                     }
                 }

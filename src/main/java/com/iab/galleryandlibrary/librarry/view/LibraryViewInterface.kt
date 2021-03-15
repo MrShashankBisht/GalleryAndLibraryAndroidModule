@@ -13,10 +13,13 @@ interface LibraryViewInterface {
     fun setViewPadding(padding:Int)
 //    margin
     fun setViewMargin(margin: Int)
+
+//    invalidate recycler view
+    fun invalidateRecyclerView();
 //    adapter and layout manager
-    fun setRecyclerAdapter(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>)
-    fun setRecyclerLayoutManager(layoutManager: LinearLayoutManager)
-    fun setRecyclerLayoutManager(layoutManager: GridLayoutManager)
-    fun setRecyclerLayoutManager(layoutManager: StaggeredGridLayoutManager)
+    fun setRecyclerAdapter(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>?)
+    fun setRecyclerLinearLayoutManager(layoutManager: LinearLayoutManager?)
+    fun setRecyclerGridLayoutManager(layoutManager: GridLayoutManager?)
+    fun setRecyclerStaggeredLayoutManager(layoutManager: StaggeredGridLayoutManager?)
 
 }

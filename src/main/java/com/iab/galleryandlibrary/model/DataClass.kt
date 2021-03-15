@@ -22,6 +22,7 @@ class MediaStoreItemDataModel(
     var id: Long,
     var contentURI: Uri,
     var displayName: String,
+    var bucketName: String,
     private val date: Date,
     var duration: Int
 ) {
