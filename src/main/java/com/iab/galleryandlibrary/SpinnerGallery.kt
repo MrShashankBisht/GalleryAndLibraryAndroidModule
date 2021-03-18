@@ -23,7 +23,6 @@ import com.iab.galleryandlibrary.adapter.adapterView.RecyclerAdapterViewHolder
 import com.iab.galleryandlibrary.model.FolderNameAndItemCount
 import com.iab.galleryandlibrary.model.MediaStoreFolderDataModel
 import com.iab.galleryandlibrary.model.MediaStoreItemDataModel
-import com.iab.galleryandlibrary.utils.ImageUtils
 import com.iab.galleryandlibrary.utils.MediaType
 import com.iab.imagetext.model.ImageTextDataModel
 import com.iab.imagetext.model.ImageType
@@ -31,6 +30,7 @@ import com.iab.imagetext.presenter.ImageTextPresenterImpl
 import com.iab.imagetext.presenter.ImageTextPresenterInterface
 import kotlinx.android.synthetic.main.activity_spinner_gallery.*
 import com.iab.galleryandlibrary.utils.Size
+import com.iab.galleryandlibrary.utils.pxToDp
 
 class SpinnerGallery : AppCompatActivity(), RecyclerAdapterInterface {
     var folderNameList: ArrayList<FolderNameAndItemCount> = ArrayList<FolderNameAndItemCount>()
@@ -134,8 +134,8 @@ class SpinnerGallery : AppCompatActivity(), RecyclerAdapterInterface {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val imageTextPresenterInterface =
             ImageTextPresenterImpl.newBuilder(this, imageTextListener)
-                .withViewWidthInDP(ImageUtils.pxToDp(applicationContext, calculateRecyclerItemHeightWidth(this.spanCount).x).toInt())
-                .withViewHeightInDP(ImageUtils.pxToDp(applicationContext,calculateRecyclerItemHeightWidth(this.spanCount).y).toInt())
+                .withViewWidthInDP(pxToDp(applicationContext, calculateRecyclerItemHeightWidth(this.spanCount).x).toInt())
+                .withViewHeightInDP(pxToDp(applicationContext,calculateRecyclerItemHeightWidth(this.spanCount).y).toInt())
                 .withImageTextImageViewScaleType(ImageView.ScaleType.CENTER_CROP)
                     .withViewPaddingInDP(5)
                 .build()

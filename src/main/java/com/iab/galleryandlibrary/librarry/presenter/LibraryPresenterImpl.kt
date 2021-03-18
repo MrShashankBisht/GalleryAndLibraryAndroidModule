@@ -17,7 +17,7 @@ import com.iab.galleryandlibrary.adapter.adapterInterface.RecyclerAdapterInterfa
 import com.iab.galleryandlibrary.adapter.adapterView.RecyclerAdapterViewHolder
 import com.iab.galleryandlibrary.librarry.view.LibraryViewImpl
 import com.iab.galleryandlibrary.librarry.view.LibraryViewInterface
-import com.iab.galleryandlibrary.utils.ImageUtils
+import com.iab.galleryandlibrary.utils.pxToDp
 import com.iab.imagetext.model.ImageTextDataModel
 import com.iab.imagetext.presenter.ImageTextPresenterImpl
 import com.iab.imagetext.presenter.ImageTextPresenterInterface
@@ -173,8 +173,8 @@ class LibraryPresenterImpl(builder: Builder): LibraryPresenterInterface, Recycle
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val imageTextPresenterInterface =
             ImageTextPresenterImpl.newBuilder(contextWeakReference.get()!!, imageTextListener)
-                .withViewWidthInDP(ImageUtils.pxToDp(contextWeakReference.get(), calculateRecyclerItemHeightWidth(this.spanCount).x).toInt())
-                .withViewHeightInDP(ImageUtils.pxToDp(contextWeakReference.get(),calculateRecyclerItemHeightWidth(this.spanCount).y).toInt())
+                .withViewWidthInDP(pxToDp(contextWeakReference.get()!!, calculateRecyclerItemHeightWidth(this.spanCount).x).toInt())
+                .withViewHeightInDP(pxToDp(contextWeakReference.get()!!,calculateRecyclerItemHeightWidth(this.spanCount).y).toInt())
                 .withViewPaddingInDP(this.recyclerItemPadding)
                 .withViewMarginInDP(this.recyclerItemMargin)
                 .withImageTextImageViewScaleType(recyclerItemImageViewScaleType)
