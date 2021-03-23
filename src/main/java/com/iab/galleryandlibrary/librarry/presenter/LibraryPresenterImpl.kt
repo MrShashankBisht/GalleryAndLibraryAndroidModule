@@ -178,6 +178,7 @@ class LibraryPresenterImpl(builder: Builder): LibraryPresenterInterface, Recycle
                 .withViewPaddingInDP(this.recyclerItemPadding)
                 .withViewMarginInDP(this.recyclerItemMargin)
                 .withImageTextImageViewScaleType(recyclerItemImageViewScaleType)
+                .withImageTextIsSingleLine(true)
                 .withImageTextTextViewVisibility(View.GONE)
                 .build()
         val view = imageTextPresenterInterface.getView()

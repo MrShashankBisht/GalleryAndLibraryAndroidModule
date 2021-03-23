@@ -16,6 +16,8 @@ import com.example.galleryproject.utils.calculateRecyclerItemHeightWidth
 import com.example.galleryproject.utils.creatingImageTextDataModel
 import com.example.galleryproject.utils.loadFoldersList
 import com.example.galleryproject.utils.loadMediaImagesList
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import com.iab.galleryandlibrary.adapter.RecyclerAdapter
 import com.iab.galleryandlibrary.adapter.SpinnerAdapter
 import com.iab.galleryandlibrary.adapter.adapterInterface.RecyclerAdapterInterface
@@ -35,6 +37,7 @@ import com.iab.galleryandlibrary.utils.pxToDp
 class SpinnerGallery : AppCompatActivity(), RecyclerAdapterInterface {
     var folderNameList: ArrayList<FolderNameAndItemCount> = ArrayList<FolderNameAndItemCount>()
     lateinit var spinnerAdapter: SpinnerAdapter
+    lateinit var mAdView: AdView
     var selectMultiple = false
     var mediaStoreFolderDataModels: ArrayList<MediaStoreFolderDataModel> =
         ArrayList<MediaStoreFolderDataModel>()
@@ -59,6 +62,11 @@ class SpinnerGallery : AppCompatActivity(), RecyclerAdapterInterface {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_spinner_gallery)
         supportActionBar!!.hide()
+
+        mAdView = findViewById(R.id.gallery_activity_adView)
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
+
         mediaStoreFolderDataModels = loadFoldersList(this, null, MediaType.IMAGE)
         mediaImageDataModels = loadMediaImagesList(
             this@SpinnerGallery,
@@ -137,7 +145,8 @@ class SpinnerGallery : AppCompatActivity(), RecyclerAdapterInterface {
                 .withViewWidthInDP(pxToDp(applicationContext, calculateRecyclerItemHeightWidth(this.spanCount).x).toInt())
                 .withViewHeightInDP(pxToDp(applicationContext,calculateRecyclerItemHeightWidth(this.spanCount).y).toInt())
                 .withImageTextImageViewScaleType(ImageView.ScaleType.CENTER_CROP)
-                    .withViewPaddingInDP(5)
+                .withViewPaddingInDP(5)
+                .withImageTextIsSingleLine(true)
                 .build()
         val view = imageTextPresenterInterface.getView()
         return RecyclerAdapterViewHolder(view, imageTextPresenterInterface)
