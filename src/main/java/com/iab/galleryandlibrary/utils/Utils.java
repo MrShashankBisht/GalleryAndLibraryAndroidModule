@@ -428,23 +428,23 @@ public class Utils {
         return false;
     }
 
-    @RequiresApi(api = 30)
-    public static void createWriteMediaRequest(Activity context, ArrayList<Uri> urisToModify, int EDIT_REQUEST_CODE) {
-
-        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        PendingIntent editPendingIntent = null;
-
-        editPendingIntent = MediaStore.createWriteRequest(contentResolver,
-                urisToModify);
-
-        // Launch a system prompt requesting user permission for the operation.
-        try {
-            context.startIntentSenderForResult(editPendingIntent.getIntentSender(),
-                    EDIT_REQUEST_CODE, null, 0, 0, 0);
-        } catch (IntentSender.SendIntentException e) {
-            e.printStackTrace();
-        }
-    }
+//    @RequiresApi(api = 30)
+//    public static void createWriteMediaRequest(Activity context, ArrayList<Uri> urisToModify, int EDIT_REQUEST_CODE) {
+//
+//        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+//        PendingIntent editPendingIntent = null;
+//
+//        editPendingIntent = MediaStore.createWriteRequest(contentResolver,
+//                urisToModify);
+//
+//        // Launch a system prompt requesting user permission for the operation.
+//        try {
+//            context.startIntentSenderForResult(editPendingIntent.getIntentSender(),
+//                    EDIT_REQUEST_CODE, null, 0, 0, 0);
+//        } catch (IntentSender.SendIntentException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     //   // Load Folders for Audio
 //    public static ArrayList<MediaStoreFolderDataModel> loadFoldersListAudio(Context context) {
