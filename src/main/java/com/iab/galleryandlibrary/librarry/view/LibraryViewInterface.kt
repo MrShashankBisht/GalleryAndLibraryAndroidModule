@@ -16,6 +16,10 @@ interface LibraryViewInterface {
 
 //    invalidate recycler view
     fun invalidateRecyclerView();
+
+    fun setRecyclerViewVisibility(visibility: Int);
+    fun setTextViewText(text: String)
+
 //    adapter and layout manager
     fun setRecyclerAdapter(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>?)
     fun setRecyclerLinearLayoutManager(layoutManager: LinearLayoutManager?)

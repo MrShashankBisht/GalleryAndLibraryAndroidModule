@@ -128,6 +128,10 @@ class LibraryPresenterImpl(builder: Builder): LibraryPresenterInterface, Recycle
         val mediaImageTextDataModel = loadMediaImagesListByBucketName(contextWeakReference.get()!!, folderName, null)
         imageTextDataModels.clear()
         imageTextDataModels = creatingImageTextDataModel(mediaImageTextDataModel)
+        if(imageTextDataModels.size == 0){
+            libraryViewInterface.setRecyclerViewVisibility(View.GONE)
+            libraryViewInterface.setTextViewText("No Data Found !!! ")
+        }
 //        Toast.makeText(contextWeakReference.get(),imageTextDataModels.size.toString(), Toast.LENGTH_LONG).show()
     }
 
@@ -139,6 +143,9 @@ class LibraryPresenterImpl(builder: Builder): LibraryPresenterInterface, Recycle
         imageTextDataModels.removeAt(id)
         contextWeakReference.get()?.let {
             (it as Activity).runOnUiThread(Runnable {
+                if(imageTextDataModels.size == 0){
+                    libraryViewInterface.setRecyclerViewVisibility(View.GONE)
+                }
                 recyclerAdapter.notifyDataSetChanged()
             })
         }
@@ -155,7 +162,6 @@ class LibraryPresenterImpl(builder: Builder): LibraryPresenterInterface, Recycle
             val mediaImageTextDataModel = loadMediaImagesListByBucketName(contextWeakReference.get()!!, it, null)
             this.imageTextDataModels.clear()
             this.imageTextDataModels = creatingImageTextDataModel(mediaImageTextDataModel)
-//
 //            recyclerAdapter = RecyclerAdapter(this)
 //            this.libraryViewInterface.setRecyclerGridLayoutManager(layoutManager)
 //            this.libraryViewInterface.setRecyclerAdapter(recyclerAdapter)
@@ -164,6 +170,9 @@ class LibraryPresenterImpl(builder: Builder): LibraryPresenterInterface, Recycle
                 (it1 as Activity).runOnUiThread(Runnable {
                     recyclerAdapter.notifyDataSetChanged()
                     this.libraryViewInterface.invalidateRecyclerView()
+                    if(imageTextDataModels.size > 0){
+                        libraryViewInterface.setRecyclerViewVisibility(View.VISIBLE)
+                    }
                 })
             }
         }

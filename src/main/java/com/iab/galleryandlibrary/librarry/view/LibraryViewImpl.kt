@@ -2,6 +2,7 @@ package com.iab.galleryandlibrary.librarry.view
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
@@ -55,6 +56,19 @@ class LibraryViewImpl(context: Context, libraryPresenterInterface: LibraryPresen
         library_recycler_view.invalidate()
     }
 
+    override fun setRecyclerViewVisibility(visibility: Int) {
+        library_recycler_view.visibility = visibility
+        if(visibility == View.VISIBLE){
+            library_text_view.visibility = View.GONE
+        }else{
+            library_text_view.visibility = View.VISIBLE
+        }
+    }
+
+    override fun setTextViewText(text: String) {
+        library_text_view.text = text
+    }
+
     override fun setRecyclerAdapter(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>?) {
         library_recycler_view.adapter = adapter
     }
@@ -70,4 +84,5 @@ class LibraryViewImpl(context: Context, libraryPresenterInterface: LibraryPresen
     override fun setRecyclerStaggeredLayoutManager(layoutManager: StaggeredGridLayoutManager?) {
         library_recycler_view.layoutManager = layoutManager
     }
+
 }
