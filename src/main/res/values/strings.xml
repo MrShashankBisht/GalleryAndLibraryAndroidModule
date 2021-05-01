@@ -2,6 +2,8 @@
     <!--    test banner ads unit id-->
 <!--    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>-->
 
-<!--    Production banner ads unit id-->
+    <!-- Production AdMob_ID-->
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-7184144287523649/2502837193</string>
+    <string name="app_id" translatable="false">ca-app-pub-7184144287523649~7912056482</string>
+    <string name="interstitial_ad_unit_id" translatable="false">ca-app-pub-7184144287523649/8685102160</string>
 </resources>
